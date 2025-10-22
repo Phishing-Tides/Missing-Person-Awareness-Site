@@ -1,15 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
-	"strings"
-
-	_ "modernc.org/sqlite"
 )
 
 func main() {
@@ -51,8 +46,13 @@ func AddAccount(db *sql.DB, username, passwordhash string) error {
 	return err
 }
 
-func GetAccount(db *sql.DB, username, passwordhash string) (string, int, error) {
-	Userquery := `SELECT username, FROM records WHERE username = ?;`
-	Passwordquery := `SELECT passwordhash FROM records WHERE passwordhash = ?;`
-	// check db for username and the compare passwordhashes
-}
+	func GetAccount(db *sql.DB, username, passwordhash string) (string, int, error) {
+		var count int
+		Userquery := "SELECT COUNT(*) FROM users WHERE username = ?"
+		err := db.QueryRow(Userquery, username).Scan(&count)
+		if err != nil {
+			return false, fmt.Errorf("failed to execute Userquery: %w", err)
+		}
+		return count > 0, nil
+		// check db for username and the compare passwordhashes
+	}
