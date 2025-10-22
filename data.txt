@@ -1,0 +1,3 @@
+admin, hash1, 0
+testuser, hash2, 100
+jaybilas, hash3, 20
