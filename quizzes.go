@@ -12,6 +12,7 @@ func main() {
 	// TODO: 
 	// Import quiz questions and answers from a file depending on which quiz they are taking
 	// Present A-D to user when asking questions
+	// tie in with html front end and make buttons for user to click on instead of typing in answers
 	quizFile, err := os.Open("testquiz.txt")
 	if err != nil {
 		log.Fatal(err)
