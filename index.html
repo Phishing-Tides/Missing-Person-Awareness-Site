@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Learning Site - Preventing Kidnappings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Prevent & Respond Learning</h1>
+    <p>Short courses to help you prevent dangerous situations and respond when something happens.</p>
+  </header>
+
+  <main>
+    <aside class="sidebar" id="sidebar">
+      <div class="resources" id="resources">
+        <h3>Hotline & Resources</h3>
+        <ul id="resourcesList"></ul>
+      </div>
+    </aside>
+
+    <section class="content" id="content">
+      <div id="courseHeader"></div>
+      <div id="modulesContainer"></div>
+    </section>
+  </main>
+
+  <template id="moduleTemplate">
+    <div class="module">
+      <button class="moduleToggle">
+        <span class="left">
+          <span class="moduleTitle"></span>
+          <span class="badge-quiz">Quiz</span>
+        </span>
+        <span class="moduleState"></span>
+      </button>
+      <div class="moduleBody">
+        <div class="moduleText"></div>
+        <div class="quizArea"></div>
+        <div class="moduleActions">
+          <button class="markComplete">Mark Complete</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="sectionTemplate">
+    <div class="section">
+      <button class="sectionToggle">
+        <span class="sectionTitle"></span>
+        <span class="sectionState"></span>
+      </button>
+      <div class="sectionBody">
+        <ul class="sectionList"></ul>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
