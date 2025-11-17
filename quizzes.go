@@ -11,7 +11,7 @@ import (
 func main() {
 	// TODO: 
 	// Import quiz questions and answers from a file depending on which quiz they are taking
-	// Otherwise display a failure message and the reason why it is wrong
+	// Present A-D to user when asking questions
 	quizFile, err := os.Open("testquiz.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -39,6 +39,9 @@ func main() {
 	}
 
 		answerIndex := 0
+		grade := 0
+
+	//Way to test if the questions and answers are being imported and anwsered correctly
 	for _, line := range questions {
 		fmt.Println(line)
 		reader := bufio.NewScanner(os.Stdin)
@@ -48,5 +51,17 @@ func main() {
 		fmt.Println(anwser == answers[answerIndex])
 		fmt.Println("Correct answer: ", answers[answerIndex])
 		answerIndex++
+		if(anwser == answers[answerIndex-1]){
+			grade++
+		}
+	}
+	gradeQuiz(grade, len(questions))
+}
+
+func gradeQuiz(grade int, totalQuestions int){
+	if(grade == totalQuestions - 1){
+		fmt.Println("You passed the quiz!")
+	} else {
+		fmt.Println("You failed the quiz.")
 	}
 }
