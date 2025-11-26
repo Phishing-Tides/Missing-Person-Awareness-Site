@@ -1,68 +1,37 @@
 package main
 
 import (
-	"strings"
-	"bufio"
-	"fmt"
+	"encoding/json"
+	"net/http"
 	"log"
-	"os"
 )
 
-func main() {
-	// TODO: 
-	// Import quiz questions and answers from a file depending on which quiz they are taking
-	// Present A-D to user when asking questions
-	// tie in with html front end and make buttons for user to click on instead of typing in answers
-	quizFile, err := os.Open("testquiz.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer quizFile.Close()
-	scanner := bufio.NewScanner(quizFile)
-	Qtarget := "Q:"
-	Atarget := "E:"
-	lineNumber := 0
-	var questions []string
-	var answers []string
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		lineNumber++
-
-		if strings.Contains(line, Qtarget){
-			questions = append(questions, line)
-		}
-
-		if strings.Contains(line, Atarget){
-			answerString := line[3:]
-			answers = append(answers, answerString)
-		}
-	}
-
-		answerIndex := 0
-		grade := 0
-
-	//Way to test if the questions and answers are being imported and anwsered correctly
-	for _, line := range questions {
-		fmt.Println(line)
-		reader := bufio.NewScanner(os.Stdin)
-		reader.Scan()
-		anwser := reader.Text()
-		fmt.Println("Your answer: ", anwser)
-		fmt.Println(anwser == answers[answerIndex])
-		fmt.Println("Correct answer: ", answers[answerIndex])
-		answerIndex++
-		if(anwser == answers[answerIndex-1]){
-			grade++
-		}
-	}
-	gradeQuiz(grade, len(questions))
+type Question struct {
+	ID int `json:"id"`
+	Text string `json:"text"`
+	Options []string `json:"options"`
+	Answer string `json:"correct_answer"`
 }
 
-func gradeQuiz(grade int, totalQuestions int){
-	if(grade == totalQuestions - 1){
-		fmt.Println("You passed the quiz!")
+var questions = []Question{
+	{ID: 1, Text: "What is the capital of France?", Options: []string{"Berlin", "Paris", "Rome", "Madrid"}, Answer: "Paris"},
+	{ID: 2, Text: "Which planet is known as the Red Planet?", Options: []string{"Earth", "Mars", "Jupiter", "Venus"}, Answer: "Mars"},
+}
+
+func getQuestionHandler(w http.ResponseWriter, r *http.Request) {
+	if len(questions) > 0 {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(questions[0])
 	} else {
-		fmt.Println("You failed the quiz.")
+		http.NotFound(w, r)
 	}
 }
+
+func main() {
+	http.Handle("/", http.FileServer(http.Dir("./static")))
+	http.HandleFunc("/api/question", getQuestionHandler)
+
+	log.Println("Server starting on :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
