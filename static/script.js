@@ -6,6 +6,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentQuestionIndex = 0;
 
+    async function gradeQuestion() {
+        const selected = document.querySelector('input[name="answer"]:checked');
+        if (!selected) {
+            alert("Please choose an answer.");
+            return null;
+        }
+
+        const response = await fetch('/api/grade', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: currentQuestionIndex + 1,   // questions start at ID 1
+                answer: selected.value
+            })
+        });
+
+        const result = await response.json();
+        return result.correct;
+    }
+
     async function loadQuestion() {
         try {
             const response = await fetch('/api/question');
@@ -32,9 +54,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    nextButton.addEventListener('click', () => {
-        loadQuestion();
-    });
+    nextButton.addEventListener('click', async () => {
+    const isCorrect = await gradeQuestion();
+    if (isCorrect === null) return;
 
+    if (isCorrect) {
+        resultElement.textContent = "Correct!";
+    } else {
+        resultElement.textContent = "Incorrect.";
+    }
+
+    if (currentQuestionIndex >= 2) {
+        questionElement.textContent = 'Quiz completed!';
+        nextButton.disabled = true;
+        return;
+    }
+
+    currentQuestionIndex++;
     loadQuestion();
+});
+    if(currentQuestionIndex === 0)
+    {
+        loadQuestion();
+    }
 });
