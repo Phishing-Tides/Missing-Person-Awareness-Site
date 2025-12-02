@@ -3,7 +3,7 @@ name = "missing-person-auth-worker"
 main = "worker.js"
 compatibility_date = "2025-12-02"
 
-account_id = "<YOUR_ACCOUNT_ID>"
+account_id = "ef65efc5c4bb2df5b95e4d6dfffa82cb"
 
 [vars]
 
