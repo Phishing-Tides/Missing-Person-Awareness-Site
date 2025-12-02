@@ -64,7 +64,7 @@ func gradeQuestionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir("./static")))
+	http.Handle("/", http.FileServer(http.Dir("./")))
 	http.HandleFunc("/api/question", getQuestionHandler)
 	http.HandleFunc("/api/grade", gradeQuestionHandler)
 
