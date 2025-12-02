@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz 1</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Bar Quiz - Missing Person Awareness Site</title>
+  <link rel="stylesheet" href="../styles.css">
   <style>
-    .login-container {
-      max-width: 400px;
-      margin: 100px auto;
+    .quiz-container {
+      max-width: 600px;
+      margin: 50px auto;
       padding: 40px;
-      background: var(--card-bg);
+      background: var(--panel);
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
       border: 1px solid rgba(139, 92, 246, 0.2);
     }
-    .login-header {
+    .quiz-header {
       text-align: center;
       margin-bottom: 30px;
     }
-    .login-header h1 {
+    .quiz-header h1 {
       color: var(--accent);
       margin-bottom: 10px;
     }
-    .login-header p {
-      color: var(--text-muted);
+    .quiz-header p {
+      color: var(--muted);
       font-size: 14px;
     }
-    .form-group {
+    .question-container {
+      margin-bottom: 30px;
+    }
+    .question-text {
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 600;
       margin-bottom: 20px;
     }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--text-color);
-      font-weight: 500;
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .form-group input {
-      width: 100%;
-      padding: 12px;
+    .option {
+      padding: 14px;
       border: 1px solid rgba(139, 92, 246, 0.3);
-      border-radius: 6px;
-      background: var(--bg-color);
-      color: var(--text-color);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s ease;
       font-size: 14px;
-      transition: border-color 0.3s ease;
     }
-    .form-group input:focus {
-      outline: none;
+    .option:hover {
+      background: rgba(139, 92, 246, 0.1);
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
     }
-    .login-btn {
+    .option input[type="radio"] {
+      margin-right: 10px;
+    }
+    .quiz-btn {
       width: 100%;
       padding: 12px;
       background: linear-gradient(90deg, var(--accent), #9333ea);
@@ -65,29 +69,34 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
-    .login-btn:hover {
+    .quiz-btn:hover {
       background: linear-gradient(90deg, #9555ff, #7a4df0);
       box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
     }
-    .login-links {
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
       text-align: center;
+      display: none;
     }
-    .login-links a {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 14px;
-      margin: 0 10px;
+    #result.correct {
+      background: rgba(52, 211, 153, 0.1);
+      color: #34d399;
+      display: block;
     }
-    .login-links a:hover {
-      text-decoration: underline;
+    #result.incorrect {
+      background: rgba(255, 107, 107, 0.1);
+      color: #ff6b6b;
+      display: block;
     }
     .back-link {
       display: block;
       text-align: center;
       margin-top: 30px;
-      color: var(--text-muted);
+      color: var(--muted);
       text-decoration: none;
       font-size: 14px;
     }
@@ -97,13 +106,25 @@
   </style>
 </head>
 <body>
-    <div id="quiz-container">
-        <h2 id="question">Question Text</h2>
-        <div id="options">
-        </div>
-        <button id="next-button">Next</button>
-        <div id="result"></div>
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <h1>Bar Quiz</h1>
+      <p>Test your knowledge on safety awareness</p>
     </div>
-    <script src="script.js"></script>
+    
+    <div class="question-container">
+      <div class="question-text" id="question">Question Text</div>
+      <div class="options" id="options">
+        <!-- Options will be generated here -->
+      </div>
+    </div>
+    
+    <button id="next-button" class="quiz-btn">Next Question</button>
+    <div id="result"></div>
+    
+    <a href="../index.html" class="back-link">← Back to Course Overview</a>
+  </div>
+  
+  <script src="script.js"></script>
 </body>
 </html>
