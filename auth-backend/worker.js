@@ -13,6 +13,9 @@ export default {
   }
 };
 
+// ------------------ Helpers ------------------
+
+// Hash a password using SHA-256
 async function hashPassword(password) {
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
@@ -22,48 +25,82 @@ async function hashPassword(password) {
     .join("");
 }
 
-async function handleRegister(request, env) {
-  const { email, password } = await request.json();
+// Insert a new user into the D1 database
+async function registerUser(email, password, env) {
   const passwordHash = await hashPassword(password);
 
   try {
     await env.DB
-      .prepare("INSERT INTO Users (email, password_hash) VALUES (?, ?)")
+      .prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)")
       .bind(email, passwordHash)
       .run();
   } catch (err) {
-    return new Response(JSON.stringify({ error: "Email already exists" }), {
-      status: 400
+    throw new Error("Email already exists");
+  }
+}
+
+// Verify a user's login credentials
+async function verifyUser(email, password, env) {
+  const passwordHash = await hashPassword(password);
+
+  const user = await env.DB
+    .prepare("SELECT * FROM users WHERE email = ?")
+    .bind(email)
+    .first();
+
+  if (!user) return false;
+  if (user.password_hash !== passwordHash) return false;
+
+  return true;
+}
+
+// ------------------ Handlers ------------------
+
+async function handleRegister(request, env) {
+  const { email, password } = await request.json();
+
+  if (!email || !password) {
+    return new Response(JSON.stringify({ error: "Email and password required" }), {
+      status: 400,
+      headers: { "content-type": "application/json" },
     });
   }
 
-  return new Response(JSON.stringify({ success: true }), {
-    headers: { "content-type": "application/json" }
-  });
+  try {
+    await registerUser(email, password, env);
+    return new Response(JSON.stringify({ success: true }), {
+      status: 201,
+      headers: { "content-type": "application/json" },
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 400,
+      headers: { "content-type": "application/json" },
+    });
+  }
 }
 
 async function handleLogin(request, env) {
   const { email, password } = await request.json();
-  const passwordHash = await hashPassword(password);
 
-  const user = await env.DB
-    .prepare("SELECT * FROM Users WHERE email = ?")
-    .bind(email)
-    .first();
-
-  if (!user) {
-    return new Response(JSON.stringify({ error: "Invalid email or password" }), {
-      status: 401
+  if (!email || !password) {
+    return new Response(JSON.stringify({ error: "Email and password required" }), {
+      status: 400,
+      headers: { "content-type": "application/json" },
     });
   }
 
-  if (user.password_hash !== passwordHash) {
+  const valid = await verifyUser(email, password, env);
+
+  if (!valid) {
     return new Response(JSON.stringify({ error: "Invalid email or password" }), {
-      status: 401
+      status: 401,
+      headers: { "content-type": "application/json" },
     });
   }
 
   return new Response(JSON.stringify({ success: true }), {
-    headers: { "content-type": "application/json" }
+    status: 200,
+    headers: { "content-type": "application/json" },
   });
 }
