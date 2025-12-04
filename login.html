@@ -133,7 +133,7 @@
       document.getElementById("loginForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const res = await fetch("https://mpuserworker.tom-tubinas.workers.dev/login", {
+        const res = await fetch("https://mpuserworker.fr0g.workers.dev/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -151,6 +151,5 @@
         }
       });
 </script>
-<script src="auth-backend/worker.js"></script>
 </body>
 </html>
