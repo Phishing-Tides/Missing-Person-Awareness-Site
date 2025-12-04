@@ -1309,6 +1309,18 @@ function renderModulePage(courseId, moduleId){
   back.addEventListener('click', ()=>{ location.hash = ''; renderAllCourses() })
   card.appendChild(back)
 
+  const nextModuleIndex = course.modules.findIndex(m=>m.id===moduleId)+1
+  if(nextModuleIndex < course.modules.length){
+    const nextBtn = document.createElement('button')
+    nextBtn.className = 'backBtn'
+    nextBtn.textContent = 'Next Module'
+    nextBtn.addEventListener('click', ()=>{
+      const nextModule = course.modules[nextModuleIndex]
+      location.hash = `#/courses/${course.id}/modules/${nextModule.id}`
+    })
+    card.appendChild(nextBtn)
+  }
+
   modulesContainer.appendChild(card)
 }
 
