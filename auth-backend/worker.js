@@ -28,7 +28,7 @@ async function handleRegister(request, env) {
 
   try {
     await env.DB
-      .prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)")
+      .prepare("INSERT INTO Users (email, password_hash) VALUES (?, ?)")
       .bind(email, passwordHash)
       .run();
   } catch (err) {
@@ -47,7 +47,7 @@ async function handleLogin(request, env) {
   const passwordHash = await hashPassword(password);
 
   const user = await env.DB
-    .prepare("SELECT * FROM users WHERE email = ?")
+    .prepare("SELECT * FROM Users WHERE email = ?")
     .bind(email)
     .first();
 
