@@ -31,7 +31,7 @@ async function registerUser(email, password, env) {
 
   try {
     await env.DB
-      .prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)")
+      .prepare("INSERT INTO authtable (email, password_hash) VALUES (?, ?)")
       .bind(email, passwordHash)
       .run();
   } catch (err) {
@@ -44,7 +44,7 @@ async function verifyUser(email, password, env) {
   const passwordHash = await hashPassword(password);
 
   const user = await env.DB
-    .prepare("SELECT * FROM users WHERE email = ?")
+    .prepare("SELECT * FROM authtable WHERE email = ?")
     .bind(email)
     .first();
 
