@@ -129,5 +129,26 @@
       window.location.href = 'index.html';
     });
   </script>
+  <script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  const res = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  const json = await res.json();
+  if (res.ok && json.ok) {
+    // cookie set by worker; redirect
+    window.location.href = '/index.html';
+  } else {
+    alert(json.error || 'Login failed');
+  }
+});
+</script>
 </body>
 </html>
