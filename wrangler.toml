@@ -1,6 +1,5 @@
-# Example `wrangler.toml` for the auth-backend project
 name = "missing-person-auth-worker"
-main = "worker.js"
+main = "auth-backend/worker.js"
 compatibility_date = "2025-12-02"
 
 account_id = "ef65efc5c4bb2df5b95e4d6dfffa82cb"
@@ -11,3 +10,4 @@ account_id = "ef65efc5c4bb2df5b95e4d6dfffa82cb"
 binding = "DB"
 database_name = "authdb"
 database_id = "9e76eab9-8fcd-48b9-ab9f-9ecaf1e30986"
+preview_database_id = "9e76eab9-8fcd-48b9-ab9f-9ecaf1e30986"
