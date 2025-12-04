@@ -13,7 +13,6 @@ export default {
   }
 };
 
-// ------------------ Helpers ------------------
 
 // Hash a password using SHA-256
 async function hashPassword(password) {
@@ -54,7 +53,6 @@ async function verifyUser(email, password, env) {
   return true;
 }
 
-// ------------------ Handlers ------------------
 
 async function handleRegister(request, env) {
   const { email, password } = await request.json();
