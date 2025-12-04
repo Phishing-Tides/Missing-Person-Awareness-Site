@@ -1309,18 +1309,6 @@ function renderModulePage(courseId, moduleId){
   back.addEventListener('click', ()=>{ location.hash = ''; renderAllCourses() })
   card.appendChild(back)
 
-  const next = document.createElement('button')
-  next.className = 'nextBtn'
-  next.textContent = 'Next Module'
-  // find next module
-  const modIndex = course.modules.findIndex(mm=>mm.id===moduleId)
-  if(modIndex >=0 && modIndex < course.modules.length -1){
-    const nextModule = course.modules[modIndex +1]
-    const locked = isLocked(course, nextModule, modIndex +1)
-    if(!locked){
-      next.addEventListener('click', ()=>{ location.hash = `#/courses/${course.id}/modules/${nextModule.id}` })
-    }
-
   modulesContainer.appendChild(card)
 }
 
